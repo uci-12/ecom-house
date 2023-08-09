@@ -5,6 +5,7 @@ import {
   QueryClientProvider,
   DehydratedState,
 } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ChakraProvider, theme } from "@chakra-ui/react";
 import "@/styles/globals.css";
 import DeviceProvider from "@/contexts/DeviceProvider";
@@ -17,7 +18,16 @@ export type MainProps = {
 
 export default function App({ Component, pageProps }: AppProps<MainProps>) {
   const { dehydratedState } = pageProps;
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+          },
+        },
+      }),
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -30,6 +40,7 @@ export default function App({ Component, pageProps }: AppProps<MainProps>) {
           </DeviceProvider>
         </ChakraProvider>
       </Hydrate>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 }

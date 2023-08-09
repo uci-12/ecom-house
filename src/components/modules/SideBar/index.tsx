@@ -40,7 +40,6 @@ const SideBar = () => {
   const { isMobile } = useDeviceDetect();
   const [hide, setHide] = useState(isMobile);
   const router = useRouter();
-  console.log(router);
 
   useEffect(() => {
     if (isMobile) setHide(true);
