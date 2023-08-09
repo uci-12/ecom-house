@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { SET_PAGINATION } from "@/constants";
+import { SET_FILTER, SET_PAGINATION } from "@/constants";
 
 type Pagination = {
   page: number;
@@ -7,8 +7,8 @@ type Pagination = {
 };
 
 type CategoryBrandFilter = {
-  categoryName?: string;
-  brandName?: string;
+  category?: string;
+  brand?: string;
 };
 
 type State = {
@@ -18,12 +18,20 @@ type State = {
   priceRange: [number | undefined, number | undefined];
 };
 
-type Action = { type: "SET_PAGINATION"; payload: Pagination };
+type Action =
+  | { type: "SET_PAGINATION"; payload: Pagination }
+  | { type: "SET_FILTER"; payload: CategoryBrandFilter };
 
 const productsReducer = (state: State, { type, payload }: Action): State => {
   switch (type) {
     case SET_PAGINATION:
       return { ...state, pagination: payload };
+    case SET_FILTER:
+      return {
+        ...state,
+        pagination: { ...state.pagination, page: 1 },
+        filter: payload,
+      };
     default:
       return state;
   }

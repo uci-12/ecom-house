@@ -1,3 +1,4 @@
 export * from "./ProductsTable";
-export * from "./useFetchProducts";
-export * from "./reducer";
+export * from "./productsQuery";
+export * from "./productsReducer";
+export * from "./ProductsFilter";

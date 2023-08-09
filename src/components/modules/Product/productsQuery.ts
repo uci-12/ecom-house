@@ -4,7 +4,11 @@ import type {
   ProductRequestParams,
   ProductResponseMapped,
 } from "@/types/productsType";
-import { getProducts } from "./endpoint";
+import {
+  getProducts,
+  getProductsCategories,
+  getProductsBrands,
+} from "./endpoint";
 
 const useGetProducts = (
   params?: ProductRequestParams,
@@ -37,4 +41,20 @@ const useGetProducts = (
   });
 };
 
-export { useGetProducts };
+const useGetProductsCategories = (options?: UseQueryOptions<string[]>) => {
+  return useQuery<string[]>({
+    queryKey: ["products-categories"],
+    queryFn: () => getProductsCategories(),
+    ...options,
+  });
+};
+
+const useGetProductsBrands = (options?: UseQueryOptions<string[]>) => {
+  return useQuery<string[]>({
+    queryKey: ["products-brands"],
+    queryFn: () => getProductsBrands(),
+    ...options,
+  });
+};
+
+export { useGetProducts, useGetProductsCategories, useGetProductsBrands };

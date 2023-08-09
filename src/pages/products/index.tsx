@@ -1,18 +1,15 @@
-import { Heading, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import {
-  ProductsTable,
-  useGetProducts,
-  useProductsReducer,
-} from "@/components/modules/Product";
-import Pagination from "@/components/modules/Pagination";
-import { TableSkeleton } from "@/components/modules/Skeleton";
+import { Heading } from "@chakra-ui/react";
+import { QueryClient, dehydrate } from "@tanstack/react-query";
+import Products from "@/components/layout/Products";
 import { customQuery } from "@/utils";
-import { useDebounce } from "@/hooks";
-import { SET_PAGINATION } from "@/constants";
+import { getProducts } from "@/components/modules/Product/endpoint";
+import type { GetServerSideProps } from "next";
+import type { MainProps } from "../_app";
 
-const Products = () => {
-  const router = useRouter();
+export const getServerSideProps: GetServerSideProps<MainProps> = async ({
+  query,
+}) => {
+  const queryClient = new QueryClient();
   const {
     brand: qBrand,
     category: qCategory,
@@ -21,7 +18,7 @@ const Products = () => {
     page: qPage,
     perPage: qPerPage,
     q: qSearch,
-  } = router.query;
+  } = query;
 
   const qBrandValue = customQuery<string>(qBrand, "");
   const qCategoryValue = customQuery<string>(qCategory, "");
@@ -31,81 +28,47 @@ const Products = () => {
   const qPerPageValue = Number(customQuery<number>(qPerPage, 10));
   const qSearchValue = customQuery<string>(qSearch, "");
 
-  const { state, dispatch } = useProductsReducer({
-    pagination: {
-      page: qPageValue,
-      perPage: qPerPageValue,
-    },
-    filter: {
-      brandName: qBrandValue,
-      categoryName: qCategoryValue,
-    },
-    search: qSearchValue,
-    priceRange: [qMinPriceValue, qMaxPriceValue],
-  });
-
-  const { page, perPage } = state.pagination;
-  const { brandName, categoryName } = state.filter;
-  const [minPrice, maxPrice] = state.priceRange;
-  const searchProductValue = state.search;
-
-  const debouncedSearchProduct = useDebounce(searchProductValue ?? "", 1000);
-
-  const {
-    data: products,
-    isLoading,
-    isFetching,
-    isSuccess,
-  } = useGetProducts({
-    brand: brandName,
-    category: categoryName,
-    limit: perPage,
-    minPrice,
-    maxPrice,
-    q: debouncedSearchProduct,
-    skip: (page - 1) * perPage,
-    select: "title,price,stock,brand,category",
-  });
-
-  const onChangePagination = (page: number, perPage: number) => {
-    dispatch({
-      type: SET_PAGINATION,
-      payload: { page, perPage },
-    });
-    router.push(
+  await queryClient.prefetchQuery(
+    [
+      "products",
       {
-        pathname: router.pathname,
-        query: {
-          ...router.query,
-          page,
-          perPage,
-        },
+        brand: qBrandValue,
+        category: qCategoryValue,
+        minPrice: Number(qMinPriceValue),
+        maxPrice: Number(qMaxPriceValue),
+        q: qSearchValue,
+        skip: (Number(qPageValue) - 1) * Number(qPerPageValue),
+        limit: Number(qPerPageValue),
       },
-      undefined,
-      { shallow: true },
-    );
-  };
+    ],
+    () =>
+      getProducts({
+        brand: qBrandValue,
+        category: qCategoryValue,
+        minPrice: Number(qMinPriceValue),
+        maxPrice: Number(qMaxPriceValue),
+        q: qSearchValue,
+        skip: (Number(qPageValue) - 1) * Number(qPerPageValue),
+        limit: Number(qPerPageValue),
+      }),
+  );
 
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+};
+
+const ProductsPage = () => {
   return (
     <>
       <Heading size="lg" mb={10}>
         Products
       </Heading>
-      <Flex flexDirection="column" gap={3}>
-        {isLoading || isFetching ? (
-          <TableSkeleton />
-        ) : isSuccess && products?.products ? (
-          <ProductsTable products={products.products} />
-        ) : null}
-        <Pagination
-          currentPage={page}
-          perPage={perPage}
-          total={products?.total ?? 0}
-          onChange={onChangePagination}
-        />
-      </Flex>
+      <Products />
     </>
   );
 };
 
-export default Products;
+export default ProductsPage;

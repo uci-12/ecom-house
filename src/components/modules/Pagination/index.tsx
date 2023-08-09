@@ -21,7 +21,7 @@ const Pagination = ({
     currentPage < totalPages && onChange(currentPage + 1, perPage);
 
   return (
-    <Flex flexWrap="wrap" gap={3} py={2} justify="center">
+    <Flex flexWrap="wrap" gap={3} justify="center">
       <Box>
         <IconButton
           icon={<ChevronLeft />}

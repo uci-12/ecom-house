@@ -1,4 +1,4 @@
-import { PRODUCTS_URL } from "@/constants";
+import { PRODUCTS_BASE_URL } from "@/constants";
 import type {
   ProductResponseMapped,
   ProductRequestParams,
@@ -15,12 +15,12 @@ const getProducts = async ({
   brand,
   q,
 }: ProductRequestParams): Promise<ProductResponseMapped> => {
-  let baseURL = `${PRODUCTS_URL}`;
+  let baseURL = `${PRODUCTS_BASE_URL}`;
   if (category !== undefined && category !== "") {
-    baseURL = `${PRODUCTS_URL}/category/${category}`;
+    baseURL = `${PRODUCTS_BASE_URL}/category/${category}`;
   }
   if (brand !== undefined && brand !== "") {
-    baseURL = `${PRODUCTS_URL}/brand/${brand}`;
+    baseURL = `${PRODUCTS_BASE_URL}/brand/${brand}`;
   }
   const url = new URL(`${baseURL}`);
 
@@ -35,13 +35,12 @@ const getProducts = async ({
 
   for (const param in parameters) {
     const value = parameters[param as keyof typeof parameters];
-    if (value !== undefined && value !== 0) {
+    if (value !== undefined && value !== 0 && value !== "") {
       url.searchParams.set(param, String(value));
     }
   }
 
   const response = await fetch(url);
-
   if (!response.ok) {
     throw new Error("Failed to fetch product list!");
   }
@@ -64,4 +63,36 @@ const getProducts = async ({
   }
 };
 
-export { getProducts };
+const getProductsCategories = async (): Promise<string[]> => {
+  const url = new URL(`${PRODUCTS_BASE_URL}/categories`);
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch products categories!");
+  }
+
+  try {
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Something went wrong: ${error}`);
+  }
+};
+
+const getProductsBrands = async (): Promise<string[]> => {
+  const url = new URL(`${PRODUCTS_BASE_URL}/brands`);
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch products brands!");
+  }
+
+  try {
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Something went wrong: ${error}`);
+  }
+};
+
+export { getProducts, getProductsCategories, getProductsBrands };
