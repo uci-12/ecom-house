@@ -6,7 +6,7 @@ import {
 } from "@/utils";
 import { PRODUCTS_URL } from "@/constants";
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { ProductsResponse, Product } from "@/types/products-type";
+import type { ProductsResponse, Product } from "@/types";
 
 const categoryHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {

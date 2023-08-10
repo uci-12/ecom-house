@@ -1,11 +1,15 @@
 import { Heading } from "@chakra-ui/react";
+import { Carts } from "@/components/features";
 
-const Carts = () => {
+const CartsPage = () => {
   return (
     <>
-      <Heading size="lg">Carts</Heading>
+      <Heading size="lg" mb={10}>
+        Carts
+      </Heading>
+      <Carts />
     </>
   );
 };
 
-export default Carts;
+export default CartsPage;

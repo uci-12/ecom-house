@@ -1,4 +1,4 @@
-import { Product } from "@/types/products-type";
+import type { Product } from "@/types";
 
 export const searchHelper = (products: Product[], q: string): Product[] => {
   const query = q.toLowerCase();

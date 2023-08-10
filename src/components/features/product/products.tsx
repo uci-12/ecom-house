@@ -7,7 +7,7 @@ import {
   useGetProductsCategories,
   ProductsFilter,
   useGetProductsBrands,
-} from "@/components/features/product";
+} from ".";
 import { TableSkeleton, Pagination } from "@/components/user-interfaces";
 import { customQuery } from "@/utils";
 import { useDebounce } from "@/hooks";

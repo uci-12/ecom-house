@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { Product } from "@/types/products-type";
+import type { Product } from "@/types";
 import { PRODUCTS_URL } from "@/constants";
 
 export default async function categoriesHandler(

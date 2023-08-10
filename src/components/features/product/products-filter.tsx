@@ -11,7 +11,7 @@ import {
   InputLeftElement,
 } from "@chakra-ui/react";
 import { Search } from "react-feather";
-import type { ProductRequestParams } from "@/types/products-type";
+import type { ProductRequestParams } from "@/types";
 import { SelectOptions, Input } from "@/components/user-interfaces";
 
 type ProductsFilterProps = {

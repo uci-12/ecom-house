@@ -1,4 +1,4 @@
-import type { Product } from "@/types/products-type";
+import type { Product } from "@/types";
 
 export const selectionHelper = (
   product: Product,

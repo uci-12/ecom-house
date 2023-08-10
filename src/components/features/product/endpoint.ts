@@ -3,7 +3,7 @@ import type {
   ProductResponseMapped,
   ProductRequestParams,
   Product,
-} from "@/types/products-type";
+} from "@/types";
 
 const getProducts = async ({
   skip,

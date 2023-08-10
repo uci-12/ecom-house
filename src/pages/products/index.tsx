@@ -1,8 +1,7 @@
 import { Heading } from "@chakra-ui/react";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
-import { Products } from "@/components/features";
+import { Products, getProducts } from "@/components/features";
 import { customQuery } from "@/utils";
-import { getProducts } from "@/components/features/product/endpoint";
 import type { GetServerSideProps } from "next";
 import type { MainProps } from "../_app";
 

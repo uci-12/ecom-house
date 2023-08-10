@@ -1,14 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
-import type {
-  ProductRequestParams,
-  ProductResponseMapped,
-} from "@/types/products-type";
-import {
-  getProducts,
-  getProductsCategories,
-  getProductsBrands,
-} from "./endpoint";
+import type { ProductRequestParams, ProductResponseMapped } from "@/types";
+import { getProducts, getProductsCategories, getProductsBrands } from ".";
 
 const useGetProducts = (
   params?: ProductRequestParams,

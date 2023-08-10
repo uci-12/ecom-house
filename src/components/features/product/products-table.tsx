@@ -8,7 +8,7 @@ import {
   Th,
   Td,
 } from "@chakra-ui/react";
-import { ProductMapped } from "@/types/products-type";
+import type { ProductMapped } from "@/types";
 
 type ProductsProps = {
   products: ProductMapped[];
