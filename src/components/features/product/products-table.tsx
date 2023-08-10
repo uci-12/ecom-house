@@ -8,7 +8,7 @@ import {
   Th,
   Td,
 } from "@chakra-ui/react";
-import { ProductMapped } from "@/types/productsType";
+import { ProductMapped } from "@/types/products-type";
 
 type ProductsProps = {
   products: ProductMapped[];
@@ -46,24 +46,16 @@ const TProductItem = ({
   </Tr>
 );
 
-const ProductsTable = ({ products }: ProductsProps) => {
-  return (
-    <TableContainer
-      borderWidth="1px"
-      borderColor="gray.100"
-      borderRadius="base"
-    >
-      <Table variant="simple" colorScheme="teal">
-        <TableCaption mt={1}>Product List</TableCaption>
-        <TProductHead />
-        <Tbody>
-          {products?.map((product: ProductMapped) => (
-            <TProductItem key={product.id} {...product} />
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
-  );
-};
-
-export { ProductsTable };
+export const ProductsTable = ({ products }: ProductsProps) => (
+  <TableContainer borderWidth="1px" borderColor="gray.100" borderRadius="base">
+    <Table variant="simple" colorScheme="teal">
+      <TableCaption mt={1}>Product List</TableCaption>
+      <TProductHead />
+      <Tbody>
+        {products?.map((product: ProductMapped) => (
+          <TProductItem key={product.id} {...product} />
+        ))}
+      </Tbody>
+    </Table>
+  </TableContainer>
+);

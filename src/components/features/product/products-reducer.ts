@@ -1,5 +1,10 @@
 import { useReducer } from "react";
-import { SET_FILTER, SET_PAGINATION } from "@/constants";
+import {
+  SET_FILTER,
+  SET_PAGINATION,
+  SET_PRICE_RANGE,
+  SET_SEARCH,
+} from "@/constants";
 
 type Pagination = {
   page: number;
@@ -20,7 +25,9 @@ type State = {
 
 type Action =
   | { type: "SET_PAGINATION"; payload: Pagination }
-  | { type: "SET_FILTER"; payload: CategoryBrandFilter };
+  | { type: "SET_FILTER"; payload: CategoryBrandFilter }
+  | { type: "SET_PRICE_RANGE"; payload: [number, number] }
+  | { type: "SET_SEARCH"; payload: string };
 
 const productsReducer = (state: State, { type, payload }: Action): State => {
   switch (type) {
@@ -31,6 +38,18 @@ const productsReducer = (state: State, { type, payload }: Action): State => {
         ...state,
         pagination: { ...state.pagination, page: 1 },
         filter: payload,
+      };
+    case SET_PRICE_RANGE:
+      return {
+        ...state,
+        pagination: { ...state.pagination, page: 1 },
+        priceRange: payload,
+      };
+    case SET_SEARCH:
+      return {
+        ...state,
+        pagination: { ...state.pagination },
+        search: payload,
       };
     default:
       return state;

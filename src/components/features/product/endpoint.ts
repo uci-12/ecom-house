@@ -3,7 +3,7 @@ import type {
   ProductResponseMapped,
   ProductRequestParams,
   Product,
-} from "@/types/productsType";
+} from "@/types/products-type";
 
 const getProducts = async ({
   skip,
@@ -15,14 +15,7 @@ const getProducts = async ({
   brand,
   q,
 }: ProductRequestParams): Promise<ProductResponseMapped> => {
-  let baseURL = `${PRODUCTS_BASE_URL}`;
-  if (category !== undefined && category !== "") {
-    baseURL = `${PRODUCTS_BASE_URL}/category/${category}`;
-  }
-  if (brand !== undefined && brand !== "") {
-    baseURL = `${PRODUCTS_BASE_URL}/brand/${brand}`;
-  }
-  const url = new URL(`${baseURL}`);
+  const url = new URL(`${PRODUCTS_BASE_URL}`);
 
   const parameters = {
     skip,
@@ -31,6 +24,8 @@ const getProducts = async ({
     minPrice,
     maxPrice,
     q,
+    category,
+    brand,
   };
 
   for (const param in parameters) {

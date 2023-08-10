@@ -8,7 +8,7 @@ import {
   ShoppingCart,
 } from "react-feather";
 import { useRouter } from "next/router";
-import { useDeviceDetect } from "@/contexts/DeviceProvider";
+import { useDeviceDetect } from "@/contexts/device-provider";
 
 const WIDTH = "250px";
 
@@ -36,7 +36,7 @@ type MenuItem = {
   icon: JSX.Element;
 };
 
-const SideBar = () => {
+export function SideBar() {
   const { isMobile } = useDeviceDetect();
   const [hide, setHide] = useState(isMobile);
   const router = useRouter();
@@ -108,6 +108,4 @@ const SideBar = () => {
       </Box>
     </Box>
   );
-};
-
-export default SideBar;
+}

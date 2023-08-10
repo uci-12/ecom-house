@@ -8,12 +8,12 @@ type PaginationProps = {
   onChange: (page: number, perPage: number) => void;
 };
 
-const Pagination = ({
+export function Pagination({
   currentPage,
   perPage,
   total,
   onChange,
-}: PaginationProps) => {
+}: PaginationProps) {
   const totalPages = Math.ceil(total / perPage);
   const handlePreviousPage = () =>
     currentPage > 1 && onChange(currentPage - 1, perPage);
@@ -59,6 +59,4 @@ const Pagination = ({
       </Box>
     </Flex>
   );
-};
-
-export default Pagination;
+}

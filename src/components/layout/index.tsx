@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Flex, Box } from "@chakra-ui/react";
-import SideBar from "../modules/SideBar";
+import { SideBar } from "../user-interfaces";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (

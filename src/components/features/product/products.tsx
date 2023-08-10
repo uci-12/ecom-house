@@ -7,15 +7,19 @@ import {
   useGetProductsCategories,
   ProductsFilter,
   useGetProductsBrands,
-} from "@/components/modules/Product";
-import Pagination from "@/components/modules/Pagination";
-import { TableSkeleton } from "@/components/modules/Skeleton";
+} from "@/components/features/product";
+import { TableSkeleton, Pagination } from "@/components/user-interfaces";
 import { customQuery } from "@/utils";
 import { useDebounce } from "@/hooks";
-import { SET_PAGINATION, SET_FILTER } from "@/constants";
+import {
+  SET_PAGINATION,
+  SET_FILTER,
+  SET_PRICE_RANGE,
+  SET_SEARCH,
+} from "@/constants";
 import type { ParsedUrlQuery } from "querystring";
 
-const Products = () => {
+export function Products() {
   const router = useRouter();
   const {
     brand: qBrand,
@@ -71,21 +75,12 @@ const Products = () => {
     select: "title,price,stock,brand,category",
   });
 
-  const {
-    data: categories,
-    isLoading: isCategoriesLoading,
-    isFetching: isCategoriesFetching,
-    isSuccess: isCategoriesSuccess,
-  } = useGetProductsCategories({
-    staleTime: Infinity,
-  });
+  const { data: categories, isSuccess: isCategoriesSuccess } =
+    useGetProductsCategories({
+      staleTime: Infinity,
+    });
 
-  const {
-    data: brands,
-    isLoading: isBrandsLoading,
-    isFetching: isBrandsFetching,
-    isSuccess: isBrandsSuccess,
-  } = useGetProductsBrands({
+  const { data: brands, isSuccess: isBrandsSuccess } = useGetProductsBrands({
     staleTime: Infinity,
   });
 
@@ -108,7 +103,7 @@ const Products = () => {
     );
   };
 
-  const onChangeSelect = (value: string, name: string) => {
+  const onChangeCategoryBrand = (value: string, name: string) => {
     dispatch({
       type: SET_FILTER,
       payload: { ...state.filter, [name]: value },
@@ -130,6 +125,44 @@ const Products = () => {
     );
   };
 
+  const onChangePriceRange = (min: number, max: number) => {
+    dispatch({
+      type: SET_PRICE_RANGE,
+      payload: [min, max],
+    });
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          page: 1,
+          minPrice: min,
+          maxPrice: max,
+        },
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
+
+  const onChangeSearchProductName = (value: string) => {
+    dispatch({
+      type: SET_SEARCH,
+      payload: value,
+    });
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          q: value,
+        },
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
+
   return (
     <Flex flexDirection="column" gap={5}>
       {isCategoriesSuccess && isBrandsSuccess && (
@@ -143,7 +176,9 @@ const Products = () => {
             maxPrice: maxPrice === 0 ? undefined : maxPrice,
             q: searchProductValue,
           }}
-          onChangeSelect={onChangeSelect}
+          onChangeCategoryBrand={onChangeCategoryBrand}
+          onChangePriceRange={onChangePriceRange}
+          onChangeSearchProductName={onChangeSearchProductName}
         />
       )}
       {isProductsLoading || isProductsFetching ? (
@@ -159,6 +194,4 @@ const Products = () => {
       />
     </Flex>
   );
-};
-
-export default Products;
+}

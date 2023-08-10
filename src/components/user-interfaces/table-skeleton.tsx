@@ -60,7 +60,7 @@ const TProductItem = () => (
   </Tr>
 );
 
-const TableSkeleton = () => (
+export const TableSkeleton = () => (
   <TableContainer borderWidth="1px" borderColor="gray.100" borderRadius="base">
     <Table variant="simple" colorScheme="teal">
       <TProductHead />
@@ -72,5 +72,3 @@ const TableSkeleton = () => (
     </Table>
   </TableContainer>
 );
-
-export { TableSkeleton };

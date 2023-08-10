@@ -1,6 +1,6 @@
-import { Product } from "@/types/productsType";
+import { Product } from "@/types";
 
-const priceRangeHelper = (
+export const priceRangeHelper = (
   products: Product[],
   minPrice: number,
   maxPrice: number,
@@ -10,5 +10,3 @@ const priceRangeHelper = (
       product.price >= Number(minPrice) && product.price <= Number(maxPrice),
   );
 };
-
-export { priceRangeHelper };

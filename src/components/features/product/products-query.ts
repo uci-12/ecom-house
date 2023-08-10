@@ -3,7 +3,7 @@ import type { UseQueryOptions } from "@tanstack/react-query";
 import type {
   ProductRequestParams,
   ProductResponseMapped,
-} from "@/types/productsType";
+} from "@/types/products-type";
 import {
   getProducts,
   getProductsCategories,

@@ -13,6 +13,8 @@ const USERS_URL = BASE_URL + "/users";
 /** Products Action */
 const SET_PAGINATION = "SET_PAGINATION";
 const SET_FILTER = "SET_FILTER";
+const SET_PRICE_RANGE = "SET_PRICE_RANGE";
+const SET_SEARCH = "SET_SEARCH";
 
 export {
   PRODUCTS_URL,
@@ -21,4 +23,6 @@ export {
   USERS_URL,
   SET_PAGINATION,
   SET_FILTER,
+  SET_PRICE_RANGE,
+  SET_SEARCH,
 };

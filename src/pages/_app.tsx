@@ -8,7 +8,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ChakraProvider, theme } from "@chakra-ui/react";
 import "@/styles/globals.css";
-import DeviceProvider from "@/contexts/DeviceProvider";
+import DeviceProvider from "@/contexts/device-provider";
 import Layout from "@/components/layout";
 import type { AppProps } from "next/app";
 

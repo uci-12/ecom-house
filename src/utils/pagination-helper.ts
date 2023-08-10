@@ -1,6 +1,6 @@
-import type { Product } from "@/types/productsType";
+import type { Product } from "@/types";
 
-const paginationHelper = (
+export const paginationHelper = (
   products: Product[],
   skip: number,
   limit: number,
@@ -9,5 +9,3 @@ const paginationHelper = (
     ? products.slice(skip, skip + limit)
     : products.slice(skip);
 };
-
-export { paginationHelper };

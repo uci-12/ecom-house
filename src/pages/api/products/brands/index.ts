@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { Product } from "@/types/productsType";
+import type { Product } from "@/types/products-type";
 import { PRODUCTS_URL } from "@/constants";
 
 export default async function categoriesHandler(
   _req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const response = await fetch(`${PRODUCTS_URL}`);
+  const response = await fetch(`${PRODUCTS_URL}?limit=100`);
   const data = await response.json();
 
   const prodFilterByBrand = await data?.products?.filter(

@@ -3,13 +3,23 @@ import {
   selectionHelper,
   priceRangeHelper,
   searchHelper,
+  categoryBrandHelper,
 } from "@/utils";
 import { PRODUCTS_URL } from "@/constants";
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { ProductsResponse, Product } from "@/types/productsType";
+import type { ProductsResponse, Product } from "@/types/products-type";
 
 const productsHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { limit = "0", skip = "0", select, minPrice, maxPrice, q } = req.query;
+  const {
+    limit = "0",
+    skip = "0",
+    select,
+    minPrice,
+    maxPrice,
+    q,
+    category,
+    brand,
+  } = req.query;
   const url = new URL(`${PRODUCTS_URL}`);
 
   url.searchParams.set("limit", "0");
@@ -27,6 +37,11 @@ const productsHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (q) {
     products = searchHelper(products, q as string);
+    totalProducts = products.length;
+  }
+
+  if (brand || category) {
+    products = categoryBrandHelper(products, category, brand);
     totalProducts = products.length;
   }
 
