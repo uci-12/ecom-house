@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Flex } from "@chakra-ui/react";
 import { TableSkeleton, Pagination } from "@/components/user-interfaces";
-import { CartsTable, useGetCarts } from ".";
+import { CartsTable, useGetCarts } from "@/components/features";
 
 type Pagination = {
   page: number;

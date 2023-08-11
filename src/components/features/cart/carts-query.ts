@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCarts, getCart } from ".";
+import { getCarts, getCart } from "@/components/features";
 import type { UseQueryOptions } from "@tanstack/react-query";
 import type { CartRequestParams, CartRespose, Cart } from "@/types";
 

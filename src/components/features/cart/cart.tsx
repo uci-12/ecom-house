@@ -1,7 +1,7 @@
 import { Heading, Box, Flex, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { ArrowLeft } from "react-feather";
-import { CartCard, CartProductsTable } from ".";
+import { CartCard, CartProductsTable } from "@/components/features";
 import type { CartDetailProps } from "@/types";
 
 export function Cart({ cart, user }: CartDetailProps) {

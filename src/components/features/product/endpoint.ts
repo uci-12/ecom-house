@@ -1,14 +1,10 @@
 import { PRODUCTS_BASE_URL } from "@/constants";
-import type {
-  ProductResponseMapped,
-  ProductRequestParams,
-  Product,
-} from "@/types";
+import type { ProductResponseMapped, ProductRequestParams } from "@/types";
 
 const getProducts = async ({
   skip,
   limit,
-  select,
+  select = "title,price,stock,brand,category",
   minPrice,
   maxPrice,
   category,
@@ -42,17 +38,7 @@ const getProducts = async ({
 
   try {
     const data = await response.json();
-    const productsMapping =
-      data?.products?.length &&
-      (await data.products.map((product: Product) => ({
-        id: product.id,
-        title: product.title,
-        price: product.price,
-        stock: product.stock,
-        brand: product.brand,
-        category: product.category,
-      })));
-    return { ...data, products: productsMapping };
+    return data;
   } catch (error) {
     throw new Error(`Something went wrong: ${error}`);
   }

@@ -46,10 +46,16 @@ type ProductRequestParams = {
   q?: string;
 };
 
+type ProductsCategoryBrand = {
+  label: string;
+  total: string;
+}[];
+
 export type {
   Product,
   ProductsResponse,
   ProductMapped,
   ProductResponseMapped,
   ProductRequestParams,
+  ProductsCategoryBrand,
 };

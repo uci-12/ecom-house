@@ -7,7 +7,7 @@ import {
   useGetProductsCategories,
   ProductsFilter,
   useGetProductsBrands,
-} from ".";
+} from "@/components/features";
 import { TableSkeleton, Pagination } from "@/components/user-interfaces";
 import { customQuery } from "@/utils";
 import { useDebounce } from "@/hooks";
@@ -71,7 +71,6 @@ export function Products() {
     maxPrice,
     q: debouncedSearchProduct,
     skip: (page - 1) * perPage,
-    select: "title,price,stock,brand,category",
   });
 
   const { data: categories, isSuccess: isCategoriesSuccess } =

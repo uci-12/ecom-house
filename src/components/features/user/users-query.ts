@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUser } from ".";
+import { getUser } from "@/components/features";
 import type { UseQueryOptions } from "@tanstack/react-query";
 import type { User } from "@/types";
 
