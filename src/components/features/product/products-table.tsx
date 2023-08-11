@@ -46,16 +46,24 @@ const TProductItem = ({
   </Tr>
 );
 
-export const ProductsTable = ({ products }: ProductsProps) => (
-  <TableContainer borderWidth="1px" borderColor="gray.100" borderRadius="base">
-    <Table variant="simple" colorScheme="teal">
-      <TableCaption mt={1}>Product List</TableCaption>
-      <TProductHead />
-      <Tbody>
-        {products?.map((product: ProductMapped) => (
-          <TProductItem key={product.id} {...product} />
-        ))}
-      </Tbody>
-    </Table>
-  </TableContainer>
-);
+const ProductsTable = ({ products }: ProductsProps) => {
+  return (
+    <TableContainer
+      borderWidth="1px"
+      borderColor="gray.100"
+      borderRadius="base"
+    >
+      <Table variant="simple" colorScheme="teal">
+        <TableCaption mt={1}>Product List</TableCaption>
+        <TProductHead />
+        <Tbody>
+          {products?.map((product: ProductMapped) => (
+            <TProductItem key={product.id} {...product} />
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
+  );
+};
+
+export { ProductsTable };

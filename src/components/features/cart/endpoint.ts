@@ -1,9 +1,10 @@
 import { CARTS_URL } from "@/constants";
-import type { CartRespose, CartRequestParams } from "@/types";
+import type { CartRespose, CartRequestParams, Cart } from "@/types";
 
+/** Cart List */
 const getCarts = async ({
-  limit,
   skip,
+  limit,
 }: CartRequestParams): Promise<CartRespose> => {
   const url = new URL(CARTS_URL);
 
@@ -29,4 +30,20 @@ const getCarts = async ({
   }
 };
 
-export { getCarts };
+/** Cart Detail */
+const getCart = async ({ cartId }: { cartId: string }): Promise<Cart> => {
+  const response = await fetch(`${CARTS_URL}/${cartId}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch cart detail");
+  }
+
+  try {
+    const data: Cart = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Something went wrong: ${error}`);
+  }
+};
+
+export { getCarts, getCart };

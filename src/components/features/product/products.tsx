@@ -62,7 +62,6 @@ export function Products() {
   const {
     data: products,
     isLoading: isProductsLoading,
-    isFetching: isProductsFetching,
     isSuccess: isProductsSuccess,
   } = useGetProducts({
     brand,
@@ -181,7 +180,7 @@ export function Products() {
           onChangeSearchProductName={onChangeSearchProductName}
         />
       )}
-      {isProductsLoading || isProductsFetching ? (
+      {isProductsLoading ? (
         <TableSkeleton />
       ) : isProductsSuccess && products?.products ? (
         <ProductsTable products={products.products} />

@@ -19,7 +19,6 @@ export function Carts() {
 
   const {
     data: carts,
-    isFetching,
     isLoading,
     isSuccess,
   } = useGetCarts({
@@ -44,7 +43,7 @@ export function Carts() {
 
   return (
     <Flex flexDirection="column" gap={5}>
-      {isLoading || isFetching ? (
+      {isLoading ? (
         <TableSkeleton />
       ) : isSuccess && carts?.carts ? (
         <CartsTable carts={carts.carts} />

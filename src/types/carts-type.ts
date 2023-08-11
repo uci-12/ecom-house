@@ -26,8 +26,33 @@ type CartRespose = {
 };
 
 type CartRequestParams = {
-  limit?: number;
   skip?: number;
+  limit?: number;
 };
 
-export type { Cart, CartProduct, CartRespose, CartRequestParams };
+type CartDetailProps = {
+  cart: Cart;
+  user: {
+    id: number;
+    name: string;
+  };
+};
+
+type CartProductMapped = {
+  id: number;
+  title: string;
+  price: number;
+  quantity: number;
+  total: number;
+  discountPercentage: number;
+  discountedPrice: number;
+};
+
+export type {
+  Cart,
+  CartProduct,
+  CartRespose,
+  CartRequestParams,
+  CartDetailProps,
+  CartProductMapped,
+};

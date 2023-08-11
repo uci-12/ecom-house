@@ -1,6 +1,11 @@
 import { Heading } from "@chakra-ui/react";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
-import { Products, getProducts } from "@/components/features";
+import {
+  Products,
+  getProducts,
+  getProductsBrands,
+  getProductsCategories,
+} from "@/components/features";
 import { customQuery } from "@/utils";
 import type { GetServerSideProps } from "next";
 import type { MainProps } from "../_app";
@@ -27,30 +32,34 @@ export const getServerSideProps: GetServerSideProps<MainProps> = async ({
   const qPerPageValue = Number(customQuery<number>(qPerPage, 10));
   const qSearchValue = customQuery<string>(qSearch, "");
 
-  await queryClient.prefetchQuery(
-    [
-      "products",
-      {
-        brand: qBrandValue,
-        category: qCategoryValue,
-        minPrice: Number(qMinPriceValue),
-        maxPrice: Number(qMaxPriceValue),
-        q: qSearchValue,
-        skip: (Number(qPageValue) - 1) * Number(qPerPageValue),
-        limit: Number(qPerPageValue),
-      },
-    ],
-    () =>
-      getProducts({
-        brand: qBrandValue,
-        category: qCategoryValue,
-        minPrice: Number(qMinPriceValue),
-        maxPrice: Number(qMaxPriceValue),
-        q: qSearchValue,
-        skip: (Number(qPageValue) - 1) * Number(qPerPageValue),
-        limit: Number(qPerPageValue),
-      }),
-  );
+  await Promise.all([
+    queryClient.prefetchQuery(["products-brands"], getProductsBrands),
+    queryClient.prefetchQuery(["products-categories"], getProductsCategories),
+    queryClient.prefetchQuery(
+      [
+        "products",
+        {
+          brand: qBrandValue,
+          category: qCategoryValue,
+          minPrice: Number(qMinPriceValue),
+          maxPrice: Number(qMaxPriceValue),
+          q: qSearchValue,
+          skip: (Number(qPageValue) - 1) * Number(qPerPageValue),
+          limit: Number(qPerPageValue),
+        },
+      ],
+      async () =>
+        await getProducts({
+          brand: qBrandValue,
+          category: qCategoryValue,
+          minPrice: Number(qMinPriceValue),
+          maxPrice: Number(qMaxPriceValue),
+          q: qSearchValue,
+          skip: (Number(qPageValue) - 1) * Number(qPerPageValue),
+          limit: Number(qPerPageValue),
+        }),
+    ),
+  ]);
 
   return {
     props: {

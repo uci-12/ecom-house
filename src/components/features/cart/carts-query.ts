@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCarts } from ".";
+import { getCarts, getCart } from ".";
 import type { UseQueryOptions } from "@tanstack/react-query";
-import type { CartRequestParams, CartRespose } from "@/types";
+import type { CartRequestParams, CartRespose, Cart } from "@/types";
 
+/** useQuery Cart List */
 function useGetCarts(
   params?: CartRequestParams,
   options?: UseQueryOptions<CartRespose>,
@@ -14,4 +15,16 @@ function useGetCarts(
   });
 }
 
-export { useGetCarts };
+/** useQuery Cart Detail */
+function useGetCart(
+  { cartId }: { cartId: string },
+  options?: UseQueryOptions<Cart>,
+) {
+  return useQuery<Cart>({
+    queryKey: ["carts", cartId],
+    queryFn: () => getCart({ cartId }),
+    ...options,
+  });
+}
+
+export { useGetCarts, useGetCart };
