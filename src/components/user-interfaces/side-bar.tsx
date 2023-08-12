@@ -15,7 +15,7 @@ const WIDTH = "250px";
 const menuItems = [
   {
     title: "Dashboard",
-    href: "/",
+    href: "/dashboard",
     icon: <Home />,
   },
   {

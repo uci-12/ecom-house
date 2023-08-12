@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Heading, Card, CardHeader, CardBody } from "@chakra-ui/react";
+import { Heading, Box, VStack, Text } from "@chakra-ui/react";
 import { DoughnutChart } from "@/components/user-interfaces";
 import { ChartData } from "chart.js";
 import { ProductMapped } from "@/types";
@@ -72,15 +72,16 @@ export function ChartProductsByBrand({ products }: ChartProductsByBrandProps) {
   const brandCount = chartData.labels?.length || 0;
 
   return (
-    <Card flex={1}>
-      <CardHeader textAlign="center" pb={0}>
+    <Box width="full" mt={4} boxShadow="lg" py={4}>
+      <VStack spacing={0.5}>
         <Heading size="md" color="blackAlpha.800">
-          PRODUCTS OF {`${brandCount > 0 ? brandCount : 0}`} BRANDS
+          Products of Brand
         </Heading>
-      </CardHeader>
-      <CardBody minW="xl">
-        <DoughnutChart data={customChartData} />
-      </CardBody>
-    </Card>
+        <Text mb="4" fontSize="xs" fontWeight="semibold" color="gray.600">
+          Total brand: {`${brandCount > 0 ? brandCount : 0}`}
+        </Text>
+      </VStack>
+      <DoughnutChart data={customChartData} />
+    </Box>
   );
 }

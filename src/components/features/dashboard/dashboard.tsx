@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import {
   useGetProducts,
   ChartProductsByBrand,
@@ -19,10 +19,15 @@ export function Dashboard() {
     <>
       <Spinner isLoading={isProductsLoading}>
         {isProductsSuccess && (
-          <Flex gap={5}>
+          <Stack
+            spacing={5}
+            width="full"
+            justify="space-between"
+            direction={{ base: "column", md: "column", lg: "row" }}
+          >
             <ChartProductsByBrand products={products?.products} />
             <ChartProductsByCategory products={products?.products} />
-          </Flex>
+          </Stack>
         )}
       </Spinner>
     </>
