@@ -1,3 +1,4 @@
+import { useMemo, useCallback } from "react";
 import { useRouter } from "next/router";
 import { Flex } from "@chakra-ui/react";
 import {
@@ -100,68 +101,76 @@ export function Products() {
     );
   };
 
-  const onChangeCategoryBrand = (value: string, name: string) => {
-    dispatch({
-      type: SET_FILTER,
-      payload: { ...state.filter, [name]: value },
-    });
+  const onChangeCategoryBrand = useCallback(
+    async (value: string, name: string) => {
+      await dispatch({
+        type: SET_FILTER,
+        payload: { ...state.filter, [name]: value },
+      });
 
-    const newQuery: Record<string, unknown> = {
-      ...router.query,
-      page: 1,
-      [name]: value,
-    };
-
-    router.push(
-      {
-        pathname: router.pathname,
-        query: newQuery as ParsedUrlQuery,
-      },
-      undefined,
-      { shallow: true },
-    );
-  };
-
-  const onChangePriceRange = (min: number, max: number) => {
-    dispatch({
-      type: SET_PRICE_RANGE,
-      payload: [min, max],
-    });
-    router.push(
-      {
-        pathname: router.pathname,
-        query: {
-          ...router.query,
-          page: 1,
-          minPrice: min,
-          maxPrice: max,
+      const newQuery: Record<string, unknown> = {
+        ...router.query,
+        page: 1,
+        [name]: value,
+      };
+      router.push(
+        {
+          pathname: router.pathname,
+          query: newQuery as ParsedUrlQuery,
         },
-      },
-      undefined,
-      { shallow: true },
-    );
-  };
+        undefined,
+        { shallow: true },
+      );
+    },
+    [dispatch, router, state.filter],
+  );
 
-  const onChangeSearchProductName = (value: string) => {
-    dispatch({
-      type: SET_SEARCH,
-      payload: value,
-    });
-    router.push(
-      {
-        pathname: router.pathname,
-        query: {
-          ...router.query,
-          q: value,
+  const onChangePriceRange = useCallback(
+    async (min: number, max: number) => {
+      await dispatch({
+        type: SET_PRICE_RANGE,
+        payload: [min, max],
+      });
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            page: 1,
+            minPrice: min,
+            maxPrice: max,
+          },
         },
-      },
-      undefined,
-      { shallow: true },
-    );
-  };
+        undefined,
+        { shallow: true },
+      );
+    },
+    [dispatch, router],
+  );
 
-  return (
-    <Flex flexDirection="column" gap={5}>
+  const onChangeSearchProductName = useCallback(
+    async (value: string) => {
+      await dispatch({
+        type: SET_SEARCH,
+        payload: value,
+      });
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            q: value,
+          },
+        },
+        undefined,
+        { shallow: true },
+      );
+    },
+    [dispatch, router],
+  );
+
+  const productsFilter = useMemo(
+    () => (
       <ProductsFilter
         categories={categories}
         brands={brands}
@@ -176,17 +185,37 @@ export function Products() {
         onChangePriceRange={onChangePriceRange}
         onChangeSearchProductName={onChangeSearchProductName}
       />
+    ),
+    [
+      brand,
+      brands,
+      categories,
+      category,
+      maxPrice,
+      minPrice,
+      onChangeCategoryBrand,
+      onChangePriceRange,
+      onChangeSearchProductName,
+      searchProductValue,
+    ],
+  );
+
+  return (
+    <Flex flexDirection="column" gap={5}>
+      {productsFilter}
       {isProductsLoading ? (
         <TableSkeleton />
       ) : isProductsSuccess && products?.products ? (
         <ProductsTable products={products.products} />
       ) : null}
-      <Pagination
-        currentPage={page}
-        perPage={perPage}
-        total={products?.total ?? 0}
-        onChange={onChangePagination}
-      />
+      {products?.total && products.total > 0 ? (
+        <Pagination
+          currentPage={page}
+          perPage={perPage}
+          total={products?.total ?? 0}
+          onChange={onChangePagination}
+        />
+      ) : null}
     </Flex>
   );
 }
