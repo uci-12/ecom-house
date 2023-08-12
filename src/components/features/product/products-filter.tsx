@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import {
   Stack,
   Box,
@@ -63,20 +63,6 @@ export function ProductsFilter({
   const isNotValidPriceRange =
     (Number(priceRange.min) ?? 0) >= (Number(priceRange.max) ?? 0);
 
-  const inputMinPrice = useMemo(
-    () => (
-      <Input
-        value={priceRange.min}
-        type="number"
-        name="min"
-        onChange={onChangePriceInput}
-        placeholder="Minimum"
-        leftAddon={<InputLeftAddon>$</InputLeftAddon>}
-      />
-    ),
-    [priceRange.min],
-  );
-
   return (
     <Stack
       spacing={4}
@@ -100,15 +86,14 @@ export function ProductsFilter({
         <VStack align="flex-start" spacing={2}>
           <Text>Price Range</Text>
           <HStack spacing={2}>
-            {inputMinPrice}
-            {/* <Input
+            <Input
               value={priceRange.min}
               type="number"
               name="min"
               onChange={onChangePriceInput}
               placeholder="Minimum"
               leftAddon={<InputLeftAddon>$</InputLeftAddon>}
-            /> */}
+            />
             <Input
               value={priceRange.max}
               type="number"
