@@ -1,5 +1,9 @@
 import { Heading } from "@chakra-ui/react";
-import { Dashboard } from "@/components/features";
+import {
+  Dashboard,
+  getProductsBrands,
+  getProductsCategories,
+} from "@/components/features";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
 import { getProducts } from "@/components/features";
 import type { GetServerSideProps } from "next";
@@ -9,6 +13,8 @@ export const getServerSideProps: GetServerSideProps<MainProps> = async () => {
   const queryClient = new QueryClient();
 
   await Promise.all([
+    queryClient.prefetchQuery(["products-brands"], getProductsBrands),
+    queryClient.prefetchQuery(["products-categories"], getProductsCategories),
     queryClient.prefetchQuery(
       [
         "products",
