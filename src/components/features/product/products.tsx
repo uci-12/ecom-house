@@ -73,12 +73,11 @@ export function Products() {
     skip: (page - 1) * perPage,
   });
 
-  const { data: categories, isSuccess: isCategoriesSuccess } =
-    useGetProductsCategories({
-      staleTime: Infinity,
-    });
+  const { data: categories = [] } = useGetProductsCategories({
+    staleTime: Infinity,
+  });
 
-  const { data: brands, isSuccess: isBrandsSuccess } = useGetProductsBrands({
+  const { data: brands = [] } = useGetProductsBrands({
     staleTime: Infinity,
   });
 
@@ -163,22 +162,20 @@ export function Products() {
 
   return (
     <Flex flexDirection="column" gap={5}>
-      {isCategoriesSuccess && isBrandsSuccess && (
-        <ProductsFilter
-          categories={categories}
-          brands={brands}
-          formValues={{
-            brand,
-            category,
-            minPrice: minPrice === 0 ? undefined : minPrice,
-            maxPrice: maxPrice === 0 ? undefined : maxPrice,
-            q: searchProductValue,
-          }}
-          onChangeCategoryBrand={onChangeCategoryBrand}
-          onChangePriceRange={onChangePriceRange}
-          onChangeSearchProductName={onChangeSearchProductName}
-        />
-      )}
+      <ProductsFilter
+        categories={categories}
+        brands={brands}
+        formValues={{
+          brand,
+          category,
+          minPrice: minPrice === 0 ? undefined : minPrice,
+          maxPrice: maxPrice === 0 ? undefined : maxPrice,
+          q: searchProductValue,
+        }}
+        onChangeCategoryBrand={onChangeCategoryBrand}
+        onChangePriceRange={onChangePriceRange}
+        onChangeSearchProductName={onChangeSearchProductName}
+      />
       {isProductsLoading ? (
         <TableSkeleton />
       ) : isProductsSuccess && products?.products ? (
