@@ -9,7 +9,7 @@ import { PRODUCTS_URL } from "@/constants";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { ProductsResponse, Product } from "@/types";
 
-const categoryHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const brandHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     limit = "0",
     skip = "0",
@@ -17,17 +17,19 @@ const categoryHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     minPrice,
     maxPrice,
     q,
-    category,
     brand,
+    category,
   } = req.query;
-  const url = new URL(`${PRODUCTS_URL}/category/${category}`);
+  const url = new URL(`${PRODUCTS_URL}`);
 
   url.searchParams.set("limit", "0");
 
   const response = await fetch(url);
   const data: ProductsResponse = await response.json();
 
-  let products = data?.products;
+  let products = data.products.filter(
+    (product: Product) => product.brand === brand,
+  );
   let totalProducts = products.length;
 
   if (minPrice && maxPrice) {
@@ -63,4 +65,4 @@ const categoryHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 };
 
-export default categoryHandler;
+export default brandHandler;

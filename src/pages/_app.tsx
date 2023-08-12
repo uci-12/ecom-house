@@ -18,16 +18,7 @@ export type MainProps = {
 
 export default function App({ Component, pageProps }: AppProps<MainProps>) {
   const { dehydratedState } = pageProps;
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            refetchOnWindowFocus: false,
-          },
-        },
-      }),
-  );
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>

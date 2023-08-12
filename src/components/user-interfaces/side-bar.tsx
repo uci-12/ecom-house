@@ -8,6 +8,7 @@ import {
   ShoppingCart,
 } from "react-feather";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useDeviceDetect } from "@/contexts/device-provider";
 
 const WIDTH = "250px";
@@ -46,9 +47,6 @@ export function SideBar() {
     else setHide(false);
   }, [isMobile]);
 
-  const handleRouter = (value: string) =>
-    router.push(value, undefined, { shallow: true });
-
   return (
     <Box
       position="relative"
@@ -80,29 +78,29 @@ export function SideBar() {
           flexDirection="column"
         >
           {menuItems?.map((item: MenuItem) => (
-            <Button
-              key={item.title}
-              p={2.5}
-              leftIcon={item.icon}
-              width="full"
-              variant="outline"
-              justifyContent="flex-start"
-              onClick={() => handleRouter(item.href)}
-              {...(router.pathname && router.pathname.includes(item.href)
-                ? {
-                    backgroundColor: "teal.500",
-                    border: "1px solid teal",
-                    color: "white",
-                    _hover: { color: "white" },
-                  }
-                : {
-                    backgroundColor: "white",
-                    border: "0.5px solid gray",
-                    _hover: { color: "teal", border: "1px solid teal" },
-                  })}
-            >
-              {!hide && item.title}
-            </Button>
+            <Link key={item.title} href={item.href}>
+              <Button
+                p={2.5}
+                leftIcon={item.icon}
+                width="full"
+                variant="outline"
+                justifyContent="flex-start"
+                {...(router.pathname && router.pathname.includes(item.href)
+                  ? {
+                      backgroundColor: "teal.500",
+                      border: "1px solid teal",
+                      color: "white",
+                      _hover: { color: "white" },
+                    }
+                  : {
+                      backgroundColor: "white",
+                      border: "0.5px solid gray",
+                      _hover: { color: "teal", border: "1px solid teal" },
+                    })}
+              >
+                {!hide && item.title}
+              </Button>
+            </Link>
           ))}
         </Flex>
       </Box>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Stack,
   Box,
@@ -44,6 +44,15 @@ export function ProductsFilter({
     max: `${maxPrice}`,
   });
 
+  useEffect(() => {
+    if (!minPrice && !maxPrice) {
+      setPriceRange({
+        min: "",
+        max: "",
+      });
+    }
+  }, [maxPrice, minPrice]);
+
   const onChangePriceInput = (value: string, key: string) => {
     setPriceRange((currState) => ({
       ...currState,
@@ -53,6 +62,20 @@ export function ProductsFilter({
 
   const isNotValidPriceRange =
     (Number(priceRange.min) ?? 0) >= (Number(priceRange.max) ?? 0);
+
+  const inputMinPrice = useMemo(
+    () => (
+      <Input
+        value={priceRange.min}
+        type="number"
+        name="min"
+        onChange={onChangePriceInput}
+        placeholder="Minimum"
+        leftAddon={<InputLeftAddon>$</InputLeftAddon>}
+      />
+    ),
+    [priceRange.min],
+  );
 
   return (
     <Stack
@@ -77,14 +100,15 @@ export function ProductsFilter({
         <VStack align="flex-start" spacing={2}>
           <Text>Price Range</Text>
           <HStack spacing={2}>
-            <Input
+            {inputMinPrice}
+            {/* <Input
               value={priceRange.min}
               type="number"
               name="min"
               onChange={onChangePriceInput}
               placeholder="Minimum"
               leftAddon={<InputLeftAddon>$</InputLeftAddon>}
-            />
+            /> */}
             <Input
               value={priceRange.max}
               type="number"

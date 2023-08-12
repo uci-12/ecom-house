@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Flex } from "@chakra-ui/react";
 import {
@@ -52,6 +52,41 @@ export function Products() {
     search: qSearchValue,
     priceRange: [qMinPriceValue, qMaxPriceValue],
   });
+
+  useEffect(() => {
+    const {
+      brand,
+      category,
+      minPrice,
+      maxPrice,
+      q,
+      page: qPage,
+      perPage: qPerPage,
+    } = router.query;
+
+    dispatch({
+      type: SET_FILTER,
+      payload: {
+        brand: brand ? `${brand}` : undefined,
+        category: category ? `${category}` : undefined,
+      },
+    });
+    dispatch({
+      type: SET_PRICE_RANGE,
+      payload: [
+        Number(customQuery<number>(minPrice, 0)),
+        Number(customQuery<number>(maxPrice, 0)),
+      ],
+    });
+    dispatch({ type: SET_SEARCH, payload: q ? `${q}` : "" });
+    dispatch({
+      type: SET_PAGINATION,
+      payload: {
+        page: Number(customQuery<number>(qPage, 1)),
+        perPage: Number(customQuery<number>(qPerPage, 10)),
+      },
+    });
+  }, [dispatch, router.query]);
 
   const { page, perPage } = state.pagination;
   const { brand, category } = state.filter;
@@ -199,6 +234,48 @@ export function Products() {
       searchProductValue,
     ],
   );
+
+  // useEffect(() => {
+  //   if (qBrand !== undefined || qCategory !== undefined) {
+  //     dispatch({
+  //       type: SET_FILTER,
+  //       payload: {
+  //         brand: qBrand !== undefined ? String(qBrand) : undefined,
+  //         category: qCategory !== undefined ? String(qCategory) : undefined,
+  //       },
+  //     });
+  //   }
+
+  //   if (qMinPrice !== undefined && qMaxPrice !== undefined) {
+  //     dispatch({
+  //       type: SET_PRICE_RANGE,
+  //       payload: [Number(qMinPrice), Number(qMaxPrice)],
+  //     });
+  //   }
+
+  //   if (qSearch !== undefined) {
+  //     dispatch({ type: SET_SEARCH, payload: String(qSearch) });
+  //   }
+
+  //   if (qPage !== undefined) {
+  //     dispatch({
+  //       type: SET_PAGINATION,
+  //       payload: {
+  //         page: Number(customQuery<number>(qPage, 1)),
+  //         perPage: Number(customQuery<number>(qPerPage, 10)),
+  //       },
+  //     });
+  //   }
+  // }, [
+  //   dispatch,
+  //   qBrand,
+  //   qCategory,
+  //   qMaxPrice,
+  //   qMinPrice,
+  //   qPage,
+  //   qPerPage,
+  //   qSearch,
+  // ]);
 
   return (
     <Flex flexDirection="column" gap={5}>

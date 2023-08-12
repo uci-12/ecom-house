@@ -23,6 +23,7 @@ export const Input = ({
   return (
     <>
       <InputGroup>
+        key={name}
         {leftAddon}
         {leftElement}
         <ChakraInput
