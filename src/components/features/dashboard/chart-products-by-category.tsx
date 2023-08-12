@@ -25,14 +25,11 @@ export function ChartProductsByCategory({
   products,
 }: ChartProductsByCategoryProps) {
   const [chartData, setChartData] = useState(defaultChartData);
-  const [categoriesRecord, setCategoriesRecord] = useState<
-    Record<string, number>
-  >({});
 
   useEffect(() => {
     if (!products) return;
 
-    const newCategories = { ...categoriesRecord };
+    const newCategories: Record<string, number> = {};
     products?.forEach((product) => {
       if (newCategories[product.category]) {
         newCategories[product.category] += 1;
@@ -40,10 +37,8 @@ export function ChartProductsByCategory({
         newCategories[product.category] = 1;
       }
     });
-    setCategoriesRecord(newCategories);
-
-    setChartData((prev) => {
-      const newData = { ...prev };
+    setChartData((currState) => {
+      const newData = { ...currState };
       newData.labels = Object.keys(newCategories);
       newData.datasets[0].data = Object.values(newCategories);
       return newData;

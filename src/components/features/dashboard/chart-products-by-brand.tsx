@@ -23,12 +23,11 @@ const defaultChartData: ChartData<"doughnut"> = {
 
 export function ChartProductsByBrand({ products }: ChartProductsByBrandProps) {
   const [chartData, setChartData] = useState(defaultChartData);
-  const [brandsRecord, setBrandsRecord] = useState<Record<string, number>>({});
 
   useEffect(() => {
     if (!products) return;
 
-    const newBrands = { ...brandsRecord };
+    const newBrands: Record<string, number> = {};
     products?.forEach((product) => {
       if (newBrands[product.brand]) {
         newBrands[product.brand] += 1;
@@ -36,10 +35,8 @@ export function ChartProductsByBrand({ products }: ChartProductsByBrandProps) {
         newBrands[product.brand] = 1;
       }
     });
-    setBrandsRecord(newBrands);
-
-    setChartData((prev) => {
-      const newData = { ...prev };
+    setChartData((currState) => {
+      const newData = { ...currState };
       newData.labels = Object.keys(newBrands);
       newData.datasets[0].data = Object.values(newBrands);
       return newData;
