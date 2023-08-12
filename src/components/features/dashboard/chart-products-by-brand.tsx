@@ -24,24 +24,28 @@ const defaultChartData: ChartData<"doughnut"> = {
 export function ChartProductsByBrand({ products }: ChartProductsByBrandProps) {
   const [chartData, setChartData] = useState(defaultChartData);
 
+  const newBrands = useMemo(() => {
+    const totalBrands: Record<string, number> = {};
+    products?.forEach((product) => {
+      if (totalBrands[product.brand]) {
+        totalBrands[product.brand] += 1;
+      } else {
+        totalBrands[product.brand] = 1;
+      }
+    });
+    return totalBrands;
+  }, [products]);
+
   useEffect(() => {
     if (!products) return;
 
-    const newBrands: Record<string, number> = {};
-    products?.forEach((product) => {
-      if (newBrands[product.brand]) {
-        newBrands[product.brand] += 1;
-      } else {
-        newBrands[product.brand] = 1;
-      }
-    });
     setChartData((currState) => {
       const newData = { ...currState };
       newData.labels = Object.keys(newBrands);
       newData.datasets[0].data = Object.values(newBrands);
       return newData;
     });
-  }, [products]);
+  }, [products, newBrands]);
 
   const customChartData = useMemo(() => {
     const backgroundColors = chartData.labels?.map(

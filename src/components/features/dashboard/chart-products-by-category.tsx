@@ -26,24 +26,28 @@ export function ChartProductsByCategory({
 }: ChartProductsByCategoryProps) {
   const [chartData, setChartData] = useState(defaultChartData);
 
+  const newCategories = useMemo(() => {
+    const totalCategories: Record<string, number> = {};
+    products?.forEach((product) => {
+      if (totalCategories[product.category]) {
+        totalCategories[product.category] += 1;
+      } else {
+        totalCategories[product.category] = 1;
+      }
+    });
+    return totalCategories;
+  }, [products]);
+
   useEffect(() => {
     if (!products) return;
 
-    const newCategories: Record<string, number> = {};
-    products?.forEach((product) => {
-      if (newCategories[product.category]) {
-        newCategories[product.category] += 1;
-      } else {
-        newCategories[product.category] = 1;
-      }
-    });
     setChartData((currState) => {
       const newData = { ...currState };
       newData.labels = Object.keys(newCategories);
       newData.datasets[0].data = Object.values(newCategories);
       return newData;
     });
-  }, [products]);
+  }, [products, newCategories]);
 
   const customChartData = useMemo(() => {
     const backgroundColors = chartData.labels?.map(

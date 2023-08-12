@@ -1,3 +1,5 @@
+import DashboardPage from "./dashboard";
+
 export const getServerSideProps = async () => {
   return {
     redirect: {
@@ -6,4 +8,4 @@ export const getServerSideProps = async () => {
   };
 };
 
-export const Home = () => null;
+export default DashboardPage;
